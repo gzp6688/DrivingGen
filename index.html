@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Deformable Neural Radiance Fields creates free-viewpoint portraits (nerfies) from casually captured videos.">
+  <meta name="keywords" content="Nerfies, D-NeRF, NeRF">
+  <meta name="viewport" content="device-width, initial-scale=1.0">
+  <title>DrivingGen: Efficient Safety-Critical Driving Video Generation with Latent Diffusion Models</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/ICME.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+</nav>
+
+
+<!-- title -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">DrivingGen: Efficient Safety-Critical Driving Video Generation with Latent Diffusion Models</h1>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">Anonymous ICME submission</span>
+          </div>
+
+       </div>
+     </div>
+   </div>
+  </div>
+</section>
+
+
+
+
+
+<!-- first video -->
+<section class="section" id="results">
+        <center>
+            <h2 class="title is-3"> </h2>
+        </center>
+        <center>
+            <table align="center">
+                <div class="large-4 columns">
+                </div>
+                <!-- <br> -->
+
+
+
+                <tr>
+                    <td align="left" style="padding-left: 5px; padding-bottom: 0px;">
+                        <video id="video-5" controls autoplay loop muted preload playsinline >
+                            <source src="./static/videos/first-oncoming.webm" type="video/webm">
+                        </video>
+                        <p style="text-align: center; max-width: 260px; word-wrap: break-word;">Collision with another oncoming vehicle</p>
+                    </td>
+                    <td align="left" style="padding-left: 5px; padding-bottom: 0px;">
+                        <video id="video-2" controls autoplay loop muted preload playsinline >
+                            <source src="./static/videos/first-crossing.webm" type="video/webm">
+                        </video>
+                        <p style="text-align: center; max-width: 260px; word-wrap: break-word;">Collision with another vehicle which turns into or crosses a road</p>
+                    </td>
+                    <td align="left" style="padding-left: 5px; padding-bottom: 0px;">
+                        <video id="video-3" controls autoplay loop muted preload playsinline >
+                            <source src="./static/videos/first-person.webm" type="video/webm">
+                        </video>
+                        <p style="text-align: center; max-width: 260px; word-wrap: break-word;">Collision between pedestrian which crosses a road</p>
+                    </td>
+                    <td align="left" style="padding-left: 5px; padding-bottom: 0px;">
+                        <video id="video-1" controls autoplay loop muted preload playsinline >
+                            <source src="./static/videos/first-moving.webm" type="video/webm">
+                        </video>
+                        <p style="text-align: center; max-width: 260px; word-wrap: break-word;">Collision with another vehicle moving ahead or waiting</p>
+                    </td>
+                    <td align="left" style="padding-left: 5px; padding-bottom: 0px;">
+                        <video id="video-4" controls autoplay loop muted preload playsinline >
+                            <source src="./static/videos/first-lateral.webm" type="video/webm">
+                        </video>
+                        <p style="text-align: center; max-width: 260px; word-wrap: break-word;">Collision with another vehicle moving laterally in the same direction</p>
+                    </td>
+
+                </tr>
+
+            </table>
+        </center>
+    </section>
+
+
+
+
+
+<!-- Abstract -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            With the increasing popularity of autonomous driving, a demand for high-quality safety-critical driving video
+            data is urgently required. However, such large-scale data is hard to obtain due to expensive and risky collection costs.
+            To alleviate the problem, we propose DrivingGen, an efficient approach built upon the T2I diffusion model for safety-critical
+            driving video generation.
+          </p>
+          <p>
+              Our model employs the “Spatio-Temporal-then-Temporal” paradigm, learning motion priors from a local to global perspective.
+              Firstly, we design an innovative Segment Flow Module to achieve local spatio-temporal modeling by capturing the distinctive dynamic
+              features of different video segments. Secondly, a lightweight Directional Consistency Attention is proposed to further enhance temporal
+              consistency from a global perspective. Additionally, we propose an efficient Temporal Shift Adapter to expand the T2I U-Net into the temporal dimension.
+          </p>
+          <p>
+              Empowered with these modules, DrivingGen outperforms the state-of-the-arts in driving video generation for safety-critical scenarios,
+              as determined by both quality and efficiency measures.
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+  </div>
+</section>
+
+<!-- Method -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Method Overview</h2>
+        <div class="content has-text-justified">
+
+          <img src="./static/images/pipeline.svg"
+               class="padded-image"
+               alt="Interpolate start reference image."/>
+          <p>
+          Overall illustration of our DrivingGen framework. (a) During the training phase, the input videos are corrupted via the diffusion process,
+              and a U-Net denoiser is trained to reconstruct the videos. During the inference phase, a gaussian noise is randomly sampled,
+              and the denoising process is repeated for T times. (b) The Segment Flow Module (SFM) achieves spatio-temporal
+              joint modeling from a local perspective. (c) The Temporal Shift Adapter (TSA) is built upon the original T2I Residual blocks,
+              facilitating information exchanged among neighboring frames. (d) The Directional Consistency Attention (DCA) further enhances
+              global temporal consistency.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+
+    <!--/ Abstract. -->
+
+    <!-- Paper video. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Text-to-Video Generation Results</h2>
+        <div class="content has-text-centered">
+          <div class="video-container1">
+           <video id="oncoming-1"
+                 controls autoplay loop
+                 muted
+                 preload
+                 playsinline
+                 width="33%">
+            <source src="./static/videos/oncoming-1.webm"
+                    type="video/webm">
+          </video>
+           <video id="oncoming-2"
+                 controls autoplay loop
+                 muted
+                 preload
+                 playsinline
+                 width="33%">
+            <source src="./static/videos/oncoming-2.webm"
+                    type="video/webm">
+          </video>
+           <video id="oncoming-3"
+                 controls autoplay loop
+                 muted
+                 preload
+                 playsinline
+                 width="33%">
+            <source src="./static/videos/oncoming-3.webm"
+                    type="video/webm">
+          </video>
+          </div>
+          <p class="common-text">Collision with another oncoming vehicle</p>
+        </div>
+        <div class="content has-text-centered">
+          <div class="video-container1">
+           <video id="crossing-1"
+                 controls autoplay loop
+                 muted
+                 preload
+                 playsinline
+                 width="33%">
+            <source src="./static/videos/crossing-1.webm"
+                    type="video/webm">
+          </video>
+           <video id="crossing-2"
+                 controls autoplay loop
+                 muted
+                 preload
+                 playsinline
+                 width="33%">
+            <source src="./static/videos/crossing-2.webm"
+                    type="video/webm">
+          </video>
+           <video id="crossing-3"
+                 controls autoplay loop
+                 muted
+                 preload
+                 playsinline
+                 width="33%">
+            <source src="./static/videos/crossing-3.webm"
+                    type="video/webm">
+          </video>
+          </div>
+          <p class="common-text">Collision with another vehicle which turns into or crosses a road</p>
+        </div>
+        <div class="content has-text-centered">
+          <div class="video-container1">
+           <video id="person-1"
+                 controls autoplay loop
+                 muted
+                 preload
+                 playsinline
+                 width="33%">
+            <source src="./static/videos/person-1.webm"
+                    type="video/webm">
+          </video>
+           <video id="person-2"
+                 controls autoplay loop
+                 muted
+                 preload
+                 playsinline
+                 width="33%">
+            <source src="./static/videos/person-2.webm"
+                    type="video/webm">
+          </video>
+           <video id="person-3"
+                 controls autoplay loop
+                 muted
+                 preload
+                 playsinline
+                 width="33%">
+            <source src="./static/videos/person-3.webm"
+                    type="video/webm">
+          </video>
+          </div>
+          <p class="common-text">Collision between pedestrian which crosses a road</p>
+        </div>
+        <div class="content has-text-centered">
+          <div class="video-container1">
+           <video id="moving-1"
+                 controls autoplay loop
+                 muted
+                 preload
+                 playsinline
+                 width="33%">
+            <source src="./static/videos/moving-1.webm"
+                    type="video/webm">
+          </video>
+           <video id="moving-2"
+                 controls autoplay loop
+                 muted
+                 preload
+                 playsinline
+                 width="33%">
+            <source src="./static/videos/moving-2.webm"
+                    type="video/webm">
+          </video>
+           <video id="moving-3"
+                 controls autoplay loop
+                 muted
+                 preload
+                 playsinline
+                 width="33%">
+            <source src="./static/videos/moving-3.webm"
+                    type="video/webm">
+          </video>
+          </div>
+          <p class="common-text">Collision with another vehicle moving ahead or waiting</p>
+        </div>
+        <div class="content has-text-centered">
+          <div class="video-container">
+           <video id="lateral-1"
+
+                 controls autoplay loop
+                 muted
+                 preload
+                 playsinline
+                 width="33%">
+            <source src="./static/videos/lateral-1.webm"
+                    type="video/webm">
+          </video>
+           <video id="lateral-2"
+                 controls autoplay loop
+                 muted
+                 preload
+                 playsinline
+                 width="33%">
+            <source src="./static/videos/lateral-2.webm"
+                    type="video/webm">
+          </video>
+           <video id="lateral-3"
+                 controls autoplay loop
+                 muted
+                 preload
+                 playsinline
+                 width="33%">
+            <source src="./static/videos/lateral-3.webm"
+                    type="video/webm">
+          </video>
+
+          </div>
+          <p class="common-text">Collision with another vehicle moving laterally in the same direction</p>
+        </div>
+        <div class="content has-text-centered">
+          <div class="video-container1">
+           <video id="left-1"
+                 controls autoplay loop
+                 muted
+                 preload
+                 playsinline
+                 width="33%">
+            <source src="./static/videos/left-1.webm"
+                    type="video/webm">
+          </video>
+           <video id="left-2"
+                 controls autoplay loop
+                 muted
+                 preload
+                 playsinline
+                 width="33%">
+            <source src="./static/videos/left-2.webm"
+                    type="video/webm">
+          </video>
+           <video id="left-3"
+                 controls autoplay loop
+                 muted
+                 preload
+                 playsinline
+                 width="33%">
+            <source src="./static/videos/left-3.webm"
+                    type="video/webm">
+          </video>
+          </div>
+          <p class="common-text">Out-of-control and leaving the roadway to the left</p>
+        </div>
+        <div class="content has-text-centered">
+          <div class="video-container1">
+           <video id="right-1"
+                 controls autoplay loop
+                 muted
+                 preload
+                 playsinline
+                 width="33%">
+            <source src="./static/videos/right-3.webm"
+                    type="video/webm">
+          </video>
+           <video id="right-2"
+                 controls autoplay loop
+                 muted
+                 preload
+                 playsinline
+                 width="33%">
+            <source src="./static/videos/right-2.webm"
+                    type="video/webm">
+          </video>
+           <video id="right-3"
+                 controls autoplay loop
+                 muted
+                 preload
+                 playsinline
+                 width="33%">
+            <source src="./static/videos/right-1.webm"
+                    type="video/webm">
+          </video>
+          </div>
+          <p class="common-text">Out-of-control and leaving the roadway to the right</p>
+        </div>
+
+      </div>
+    </div>
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+
+
+<section class="section" id="t2v_comp">
+        <center>
+            <h2 class="title is-3">Method Comparison</h2>
+        </center>
+        <center>
+            <table align="center">
+                <div class="large-4 columns">
+                </div>
+                <br>
+                <tr>
+                    <td width="256" valign="middle" halign="middle" align="middle"
+                        style="font-size:20px; padding-top:110px"> MCVD[1]</td>
+                    <td align="left" style="padding-left: 0px;"><video id="mcvd-1" controls autoplay loop muted preload playsinline width="98.5%">
+                            width="400" height="400" <source src="./static/videos/mcvd-crossing.webm" type="video/webm"></video></td>
+                    <td align="left" style="padding-left: 0px;"><video id="mcvd-2" controls autoplay loop muted preload playsinline width="98.5%">
+                            width="400" height="400" <source src="./static/videos/mcvd-3.webm" type="video/webm"></video></td>
+                    <td align="left" style="padding-left: 0px;"><video id="mcvd-3" controls autoplay loop muted preload playsinline width="98.5%">
+                            width="400" height="400" <source src="./static/videos/mcvd-2.webm" type="video/webm"></video></td>
+
+                </tr>
+                <tr>
+                    <td width="256" valign="middle" halign="middle" align="center"
+                        style="font-size:20px; padding-top:110px"> PVDM[2]</td>
+                    <td align="left" style="padding-left: 0px;"><video id="pvdm-1" controls autoplay loop muted preload playsinline width="98.5%">
+                            width="400" height="400" <source src="./static/videos/pvdm-crossing1.webm" type="video/webm"></video></td>
+                    <td align="left" style="padding-left: 0px;"><video id="pvdm-2" controls autoplay loop muted preload playsinline width="98.5%">
+                            width="400" height="400" <source src="./static/videos/pvdm-2.webm" type="video/webm"></video></td>
+                    <td align="left" style="padding-left: 0px;"><video id="pvdm-3" controls autoplay loop muted preload playsinline width="98.5%">
+                            width="400" height="400" <source src="./static/videos/pvdm-1.webm" type="video/webm"></video></td>
+                    <td align="left" style="padding-left: 0px;"><img src="./static/images/white.jpg" width="248" />    </td>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="256" valign="middle" halign="middle" align="middle"
+                        style="font-size:20px; padding-top:110px"> VideoComposer[3]</td>
+                    <td align="left" style="padding-left: 0px;"><video id="videocomposer-1" controls autoplay loop muted preload playsinline width="98.5%">
+                            width="400" height="400" <source src="./static/videos/videocomposer-1.webm" type="video/webm"></video></td>
+                    <td align="left" style="padding-left: 0px;"><video id="videocomposer-2" controls autoplay loop muted preload playsinline width="98.5%">
+                            width="400" height="400" <source src="./static/videos/videocomposer-2.webm" type="video/webm"></video></td>
+                    <td align="left" style="padding-left: 0px;"><video id="videocomposer-3" controls autoplay loop muted preload playsinline width="98.5%">
+                            width="400" height="400" <source src="./static/videos/videocomposer-3.webm" type="video/webm"></video></td>
+
+                </tr>
+                <tr>
+                    <td width="256" valign="middle" halign="middle" align="middle"
+                        style="font-size:20px; padding-top:110px"> Ours </td>
+                    <td align="left" style="padding-left: 0px;"><video id="compare-moving" controls autoplay loop muted preload playsinline width="98.5%">
+                            width="400" height="400" <source src="./static/videos/compare-crossing.webm" type="video/webm"></video></td>
+                    <td align="left" style="padding-left: 0px;"><video id="compare-person" controls autoplay loop muted preload playsinline width="98.5%">
+                            width="400" height="400" <source src="./static/videos/compare-moving.webm" type="video/webm"></video></td>
+                    <td align="left" style="padding-left: 0px;"><video id="compare-crossing" controls autoplay loop muted preload playsinline width="98.5%">
+                            width="400" height="400" <source src="./static/videos/compare-lateral.webm" type="video/webm"></video></td>
+
+                </tr>
+
+            </table>
+        </center>
+    </section>
+
+
+
+
+<footer class="footer">
+  <div class="container">
+
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            [1] Voleti, Vikram and Jolicoeur-Martineau, Alexia and Pal, Chris. MCVD-masked conditional video diffusion for prediction, generation, and interpolation. In NeurIPS, 2022.
+          </p>
+          <p>
+            [2] Yu, Sihyun and Sohn, Kihyuk and Kim, Subin and Shin, Jinwoo. Video probabilistic diffusion models in projected latent space. In CVPR, 2023.
+          </p>
+          <p>
+            [3] Wang, Xiang and Yuan, Hangjie and Zhang, Shiwei and Chen, Dayou and Wang, Jiuniu and Zhang, Yingya and Shen, Yujun and Zhao, Deli and Zhou, Jingren. VideoComposer: Compositional Video Synthesis with Motion Controllability. In arXiv, 2023.
+          </p>
+          <p>
+            Project page template is borrowed from <a
+              href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+          </p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
+
+
+
+<style>
+        /* Text-to-Video Generation Results */
+        .content.has-text-centered {
+            position: relative;
+            margin-top: 20px;
+            padding-bottom: 5px; /* 为虚线添加内边距 */
+        }
+
+        .content.has-text-centered::after {
+
+        }
+
+        .video-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .video-container1 {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .video {
+            width: 30%;
+        }
+
+        .video-description {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .common-text {
+            text-align: center;
+            margin-top: 10px; /* 调整与视频行之间的上边距 */
+        }
+        .padded-image {
+          margin: 10px; /* 设置外边距，增加填充 */
+        }
+    </style>
+
